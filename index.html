@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>picker</title>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" href="./css/mui.picker.min.css">
+    <link rel="stylesheet" href="./css/mui.min.css">
+    <script src="./js/mui.min.js"></script>
+    <script src="./js/mui.picker.min.js"></script>
+</head>
+<body id="body">
+    <ul id="picker"></ul>
+</body>
+<script type="text/javascript">
+    var dataGenerator = function(data){
+        var arr = [];
+        for(var i in data){
+            if(typeof(data[i])=='object'){
+                arr.push({text:i,children:dataGenerator(data[i])});
+            }else{
+                arr.push({text:data[i]});
+            }
+        }
+        return arr;
+    };
+    function cityPicker(data){
+        var d = dataGenerator(data.result);
+        var cityPicker3 = new mui.PopPicker({
+            layer: 3,
+            panel:'#picker'
+        });
+        cityPicker3.setData(d);
+        cityPicker3.show();
+	}
+    (function() {
+        mui.init();
+        mui.ready(function(){
+            var script = document.createElement('script');
+            script.src = 'http://www.orimuse.com:8120/orimuse2/api/params/areajson?callback=cityPicker';
+            document.getElementsByTagName('head')[0].appendChild(script);
+        });
+    })();
+</script>
+</html>
