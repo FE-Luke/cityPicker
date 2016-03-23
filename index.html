@@ -10,6 +10,9 @@
     <script src="./js/mui.picker.min.js"></script>
 </head>
 <body id="body">
+	<div id="result" class="mui-btn mui-btn-primary mui-btn-block">&nbsp;</div>
+    <p></p>
+	<div id="btn" class="mui-btn mui-btn-danger mui-btn-block" style="display: none">选择</div>
 </body>
 <script type="text/javascript">
     var dataGenerator = function(data){
@@ -30,9 +33,9 @@
             panel:'#picker'
         });
         cityPicker3.setData(d);
-        cityPicker3.show(function(items){
-        	document.querySelector('body').innerHTML = '你选择了:' + (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
-        });
+        window.cityPicker3 = cityPicker3;
+        document.querySelector('#btn').style.display = 'block';
+
 	}
     (function() {
         mui.init();
@@ -40,7 +43,16 @@
             var script = document.createElement('script');
             script.src = 'http://www.orimuse.com:8120/orimuse2/api/params/areajson?callback=cityPicker';
             document.getElementsByTagName('head')[0].appendChild(script);
+            document.querySelector('#btn').addEventListener('tap', function(event) {
+                cityPicker3.show(function(items) {
+                    document.querySelector('#result').innerText = "你选择的城市是:" + (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+                    document.querySelector('#btn').innerHTML = '重新选择';
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
         });
+
     })();
 </script>
 </html>
